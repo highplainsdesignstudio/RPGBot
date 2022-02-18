@@ -1,0 +1,16 @@
+{
+  "name": "RPGBot",
+  "version": "0.0.1",
+  "description": "A discord bot with RPG commands or whatever.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/rest": "^0.3.0",
+    "discord-api-types": "^0.27.1",
+    "discord.js": "^13.6.0"
+  }
+}
