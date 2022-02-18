@@ -6,6 +6,9 @@ const { Routes } = require('discord-api-types/v9');
 const commands = [{
   name: 'attack',
   type: 2
+}, {
+  name: 'heal',
+  type: 2
 }]; 
 
 const rest = new REST({ version: '9' }).setToken(process.env.TOKEN);

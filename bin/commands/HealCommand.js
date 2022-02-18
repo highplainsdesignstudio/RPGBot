@@ -1,13 +1,13 @@
 const Dice = require('../modules/Dice');
 const Players = require('../modules/Players');
 
-const AttackCommand = {
-    _attackValue: 0,
-    get attackValue() {
-        return this._attackValue;
+const HealCommand = {
+    _healValue: 0,
+    get healValue() {
+        return this._healValue;
     },
-    set attackValue(value) {
-        this._attackValue = value;
+    set healValue(value) {
+        this._healValue = value;
     },
 
     _player: {},
@@ -26,27 +26,24 @@ const AttackCommand = {
         this._target = value;
     },
 
-    attack: async function(interaction) {
-        // Generate an attack value.
-        // this.generateAttackValue();
-        this.attackValue = Dice.roll(6);
-        // Check if the user's process variable exists.
+    heal: async function(interaction) {
+        this.healValue = Dice.roll(6);
         this.checkUser(interaction);
         // Check if the target user's process variable exists.
         this.checkTarget(interaction);
         // console.log(process.env[`_${interaction.user.username}`]);
         // await interaction.reply(`${interaction.user} has attacked ${interaction.targetUser} for ${this.attackValue} points. ${interaction.targetUser} now has ${process.env[`_${interaction.targetUser.username}`]} hit points left.`);
         await interaction.reply({
-            content: `${interaction.user} has attacked ${interaction.targetUser} for ${this.attackValue} points. ${interaction.targetUser} now has ${this.target.life} hit points left.`,
+            content: `${interaction.user} has healed ${interaction.targetUser} for ${this.healValue} points. ${interaction.targetUser} now has ${this.target.life} hit points left.`,
             files: [{
-                attachment: './assets/SpellBook03_89.png'
+                attachment: './assets/SpellBook03_96.png'
             }]
         });
     },
 
     checkTarget: function(interaction) {
         this.target = Players.find(interaction.targetUser.username);
-        this.target.life = this.target.life - this.attackValue;
+        this.target.life = this.target.life + this.healValue;
         Players.updateTarget(this.target);
     },
 
@@ -58,8 +55,8 @@ const AttackCommand = {
                 return false;
             } else return true;
         });
-        isExempt ? console.log('No Timeout.') : interaction.member.timeout(1000*30, 'You have attacked another user!');
+        isExempt ? console.log('No Timeout.') : interaction.member.timeout(1000*30, 'You have healed another user!');
     },
 }
 
-module.exports = AttackCommand;
+module.exports = HealCommand;

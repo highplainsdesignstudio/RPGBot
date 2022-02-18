@@ -1,10 +1,10 @@
 {
-  "name": "RPGBot",
+  "name": "rpg-bot",
   "version": "0.0.1",
   "description": "A discord bot with RPG commands or whatever.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "nodemon index.js"
   },
   "author": "",
   "license": "ISC",
