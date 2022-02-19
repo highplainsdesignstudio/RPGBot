@@ -38,6 +38,35 @@ const Players = {
          });
         players[_index] = target;
         process.env.PLAYERS = JSON.stringify(players);
+    },
+
+    targetTimeoutExempt: function(interaction) {
+        const exemptRoles = JSON.parse(process.env.TIMEOUT_EXEMPT);
+        const isExempt = !exemptRoles.every(role => {
+            if(interaction.targetMember._roles.includes(role)) {
+                return false;
+            } else return true;
+        });
+        return isExempt;
+    },
+    foundTargetTimeoutExempt: function(foundTarget) {
+        const exemptRoles = JSON.parse(process.env.TIMEOUT_EXEMPT);
+        const isExempt = !exemptRoles.every(role => {
+            if(foundTarget._roles.includes(role)) {
+                return false;
+            } else return true;
+        });
+        return isExempt;
+    },
+
+    userTimeoutExempt: function(interaction) {
+        const exemptRoles = JSON.parse(process.env.TIMEOUT_EXEMPT);
+        const isExempt = !exemptRoles.every(role => {
+            if(interaction.member._roles.includes(role)) {
+                return false;
+            } else return true;
+        });
+        return isExempt;
     }
 }
 

@@ -27,18 +27,28 @@ const HealCommand = {
     },
 
     heal: async function(interaction) {
-        this.healValue = Dice.roll(6);
-        this.checkUser(interaction);
-        // Check if the target user's process variable exists.
-        this.checkTarget(interaction);
-        // console.log(process.env[`_${interaction.user.username}`]);
-        // await interaction.reply(`${interaction.user} has attacked ${interaction.targetUser} for ${this.attackValue} points. ${interaction.targetUser} now has ${process.env[`_${interaction.targetUser.username}`]} hit points left.`);
-        await interaction.reply({
-            content: `${interaction.user} has healed ${interaction.targetUser} for ${this.healValue} points. ${interaction.targetUser} now has ${this.target.life} hit points left.`,
-            files: [{
-                attachment: './assets/SpellBook03_96.png'
-            }]
-        });
+
+        if (interaction.targetMember.user.bot) {
+            await interaction.reply({
+                content: `${interaction.user} has targeted a bot! You can't target bots. Do something else.`,
+                files: [{
+                    attachment: './assets/bot.png'
+                }]
+            });
+        } else {
+            this.healValue = Dice.roll(6);
+            this.checkUser(interaction);
+            // Check if the target user's process variable exists.
+            const targetIsDead = this.checkTarget(interaction);
+            // console.log(process.env[`_${interaction.user.username}`]);
+            // await interaction.reply(`${interaction.user} has attacked ${interaction.targetUser} for ${this.attackValue} points. ${interaction.targetUser} now has ${process.env[`_${interaction.targetUser.username}`]} hit points left.`);
+            await interaction.reply({
+                content: `${interaction.user} has healed ${interaction.targetUser} for ${this.healValue} points. ${interaction.targetUser} now has ${this.target.life} hit points left.`,
+                files: [{
+                    attachment: './assets/SpellBook03_96.png'
+                }]
+            });
+        }
     },
 
     checkTarget: function(interaction) {
