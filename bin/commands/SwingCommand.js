@@ -81,7 +81,7 @@ const SwingCommand = {
         // this.attackValue = 100;
         this.user = Players.find(interaction.user.username);
         this.target = Players.find(this.found.user.username);
-        this.attackValue = Dice.modifiedAttackValue(this.attackValue, this.user.attack, this.found.defense);
+        this.attackValue = Dice.modifiedAttackValue(this.attackValue, this.user.attack, this.target.defense);
         this.target.life = this.target.life - this.attackValue;
         Players.updateTarget(this.target);
 
