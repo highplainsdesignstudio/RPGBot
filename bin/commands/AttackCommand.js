@@ -27,7 +27,6 @@ const AttackCommand = {
     },
 
     attack: async function(interaction) {
-        
         if (interaction.targetMember.user.bot) {
             await interaction.reply({
                 content: `${interaction.user} has targeted a bot! You can't target bots. Do something else.`,
@@ -36,80 +35,59 @@ const AttackCommand = {
                 }]
             });
         } else {
-            this.attackValue = Dice.roll(6);
-            // this.attackValue = 100;
-            // Check if the user's process variable exists.
-            this.checkUser(interaction);
-            // Check if the target user's process variable exists.
-            const targetIsDead = this.checkTarget(interaction);
-            // console.log(process.env[`_${interaction.user.username}`]);
-            // await interaction.reply(`${interaction.user} has attacked ${interaction.targetUser} for ${this.attackValue} points. ${interaction.targetUser} now has ${process.env[`_${interaction.targetUser.username}`]} hit points left.`);
-            if (targetIsDead) {
-                await interaction.reply({
-                    content: `${interaction.user} has attacked ${interaction.targetUser} for ${this.attackValue} points. ${interaction.targetUser.username} has been incapacitated! They will be revived in 2 minutes.`,
-                    files: [{
-                        attachment: './assets/Death.png'
-                    }]
-                });
-            } else {
-                await interaction.reply({
-                    content: `${interaction.user} has attacked ${interaction.targetUser} for ${this.attackValue} points. ${interaction.targetUser} now has ${this.target.life} hit points left.`,
-                    files: [{
-                        attachment: './assets/SpellBook03_89.png'
-                    }]
-                });
+            // Perform attack.
+            await this.performAttack(interaction);
+
+            // Check if target is dead.
+            if(this.target.life <= 0) {
+                await this.targetDied(interaction);
             }
         }
-
-
     },
 
-    checkIfDead: function(interaction, target) {
-        if(target.life <= 0) {
-            const isExempt = this.targetTimeoutExempt(interaction);
-            try {
-                isExempt ? console.log('is exempt') : interaction.targetMember.timeout(1000*120, 'You have died.');
-            } catch (error) {
-                console.log(error);
-            }
-            return true;
-        } else return false;
-    },
-
-    checkTarget: function(interaction) {
+    performAttack: async function(interaction) {
+        this.attackValue = Dice.roll(6);
+        // this.attackValue = 100;
         this.target = Players.find(interaction.targetUser.username);
         this.target.life = this.target.life - this.attackValue;
-        const targetIsDead = this.checkIfDead(interaction, this.target);
-        if(targetIsDead) this.target.life = 100;
         Players.updateTarget(this.target);
-        return targetIsDead;
-    },
 
-    checkUser: function(interaction) {
-        this.player = Players.find(interaction.user.username);
-        const isExempt = this.userTimeoutExempt(interaction);
-        isExempt ? console.log('No Timeout.') : interaction.member.timeout(1000*30, 'You have attacked another user!');
-    },
-
-    targetTimeoutExempt: function(interaction) {
-        const exemptRoles = JSON.parse(process.env.TIMEOUT_EXEMPT);
-        const isExempt = !exemptRoles.every(role => {
-            if(interaction.targetMember._roles.includes(role)) {
-                return false;
-            } else return true;
+        // Send the interaction with the results
+        await interaction.reply({
+            content: `${interaction.user} has attacked ${interaction.targetUser} for ${this.attackValue} points. ${interaction.targetUser} now has ${this.target.life>0 ? this.target.life : 'no'} hit points left.`,
+            files: [{
+                attachment: './assets/SpellBook03_89.png'
+            }]
         });
-        return isExempt;
+        // Timeout the user if possible.
+        Players.userTimeout(interaction, 30, "You have attacked someone!")
     },
-
-    userTimeoutExempt: function(interaction) {
-        const exemptRoles = JSON.parse(process.env.TIMEOUT_EXEMPT);
-        const isExempt = !exemptRoles.every(role => {
-            if(interaction.member._roles.includes(role)) {
-                return false;
-            } else return true;
-        });
-        return isExempt;
-    }
+    
+    targetDied: async function(interaction) {
+        // Check if target is timeout exempt and follow up the interaction.
+        if(Players.targetTimeoutExempt(interaction)) {
+            // target is exempt, send the followup.
+            console.log('No Timeout');
+            await interaction.followUp({
+                content:`${interaction.targetUser} has been incapacitated!`,
+                files: [{
+                    attachment: './assets/Death.png'
+                }]
+            });
+        } else { 
+            // Timeout the target and send the followup.;
+            interaction.followUp({
+                content:`${interaction.targetUser.username} has been incapacitated! They will be revived in 2 minutes.`,
+                files: [{
+                    attachment: './assets/Death.png'
+                }]
+            });
+            Players.targetTimeout(interaction, 120, "You have lost all of your hit points.");
+        }
+        // Either way, reset the player life to 100 and update.
+        this.target.life = 100;
+        Players.updateTarget(this.target);
+    },
 }
 
 module.exports = AttackCommand;

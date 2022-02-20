@@ -1,4 +1,9 @@
 const Players = {
+    /**
+     * Finds a stored player or creates and stores a new one.
+     * @param {*} username 
+     * @returns The stored player.
+     */
     find: function(username) {
         const players = JSON.parse(process.env.PLAYERS); // Will return an array of {username:DiscordName, life:100, attack: 1, heal: 1}
         // Loop through the array to find if the user is included.
@@ -25,6 +30,34 @@ const Players = {
             return _player;
         }
     },
+    
+    foundTargetTimeout: function(interaction, foundTarget, seconds, reason) {
+        this.foundTargetTimeoutExempt(foundTarget) ? console.log('No Timeout') : foundTarget.timeout(1000*seconds, reason);
+    },
+
+    foundTargetTimeoutExempt: function(foundTarget) {
+        const exemptRoles = JSON.parse(process.env.TIMEOUT_EXEMPT);
+        const isExempt = !exemptRoles.every(role => {
+            if(foundTarget._roles.includes(role)) {
+                return false;
+            } else return true;
+        });
+        return isExempt;
+    },
+
+    targetTimeout: function(interaction, seconds, reason) {
+        this.targetTimeoutExempt(interaction) ? console.log('No Timeout') : interaction.member.timeout(1000*seconds, reason); 
+    },
+
+    targetTimeoutExempt: function(interaction) {
+        const exemptRoles = JSON.parse(process.env.TIMEOUT_EXEMPT);
+        const isExempt = !exemptRoles.every(role => {
+            if(interaction.targetMember._roles.includes(role)) {
+                return false;
+            } else return true;
+        });
+        return isExempt;
+    },
 
     updateTarget: function(target) {
         const players = JSON.parse(process.env.PLAYERS); // Will return an array of {username:DiscordName, life:100, attack: 1, heal: 1}
@@ -40,25 +73,6 @@ const Players = {
         process.env.PLAYERS = JSON.stringify(players);
     },
 
-    targetTimeoutExempt: function(interaction) {
-        const exemptRoles = JSON.parse(process.env.TIMEOUT_EXEMPT);
-        const isExempt = !exemptRoles.every(role => {
-            if(interaction.targetMember._roles.includes(role)) {
-                return false;
-            } else return true;
-        });
-        return isExempt;
-    },
-    foundTargetTimeoutExempt: function(foundTarget) {
-        const exemptRoles = JSON.parse(process.env.TIMEOUT_EXEMPT);
-        const isExempt = !exemptRoles.every(role => {
-            if(foundTarget._roles.includes(role)) {
-                return false;
-            } else return true;
-        });
-        return isExempt;
-    },
-
     userTimeoutExempt: function(interaction) {
         const exemptRoles = JSON.parse(process.env.TIMEOUT_EXEMPT);
         const isExempt = !exemptRoles.every(role => {
@@ -67,6 +81,10 @@ const Players = {
             } else return true;
         });
         return isExempt;
+    },
+    
+    userTimeout: function(interaction, seconds, reason) {
+        this.userTimeoutExempt(interaction) ? console.log('No Timeout') : interaction.member.timeout(1000*seconds, reason);
     }
 }
 
