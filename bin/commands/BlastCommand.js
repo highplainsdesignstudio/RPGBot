@@ -14,7 +14,10 @@ const BlastCommand = {
 
     blast: async function(interaction, channel) {
         await interaction.reply({
-            content: `${interaction.user} has blasted the entrance of the room. `
+            content: `${interaction.user} has blasted the entrance of the room.`,
+            files: [{
+                attachment: './assets/blast.png'
+            }]
         });
         this.targets = await this.findTargets(channel);
 
