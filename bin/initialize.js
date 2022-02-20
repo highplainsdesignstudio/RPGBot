@@ -4,12 +4,25 @@ const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 
 const commands = [
+
   {
     name: 'attack',
     type: 2
-  }, 
+  },
+  {
+    name: 'bolster',
+    type: 2
+  },
   {
     name: 'heal',
+    type: 2
+  },
+  {
+    name: 'inspect',
+    type: 2
+  },
+  {
+    name: 'intimidate',
     type: 2
   },
   {

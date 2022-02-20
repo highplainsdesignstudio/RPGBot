@@ -19,9 +19,11 @@ const Players = {
         if(found) return _player;
         else {
             // Add a new player to the process.env.PLAYERS array.
+            // This is where the stats are placed.
             _player = {
                 username: username,
                 attack: 1,
+                defense: 1,
                 heal: 1,
                 life: 100
             }

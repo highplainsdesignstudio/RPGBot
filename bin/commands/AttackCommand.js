@@ -10,20 +10,20 @@ const AttackCommand = {
         this._attackValue = value;
     },
 
-    _player: {},
-    get player() {
-        return this._player;
-    },
-    set player(value) {
-        this._player = value;
-    },
-
     _target: {},
     get target() {
         return this._target;
     },
     set target(value) {
         this._target = value;
+    },
+
+    _user: {},
+    get user() {
+        return this._user;
+    },
+    set user(value) {
+        this._user = value;
     },
 
     attack: async function(interaction) {
@@ -48,7 +48,9 @@ const AttackCommand = {
     performAttack: async function(interaction) {
         this.attackValue = Dice.roll(6);
         // this.attackValue = 100;
+        this.user = Players.find(interaction.user.username);
         this.target = Players.find(interaction.targetUser.username);
+        this.attackValue = Dice.modifiedAttackValue(this.attackValue, this.user.attack, this.target.defense);
         this.target.life = this.target.life - this.attackValue;
         Players.updateTarget(this.target);
 
@@ -60,7 +62,7 @@ const AttackCommand = {
             }]
         });
         // Timeout the user if possible.
-        Players.userTimeout(interaction, 30, "You have attacked someone!")
+        Players.userTimeout(interaction, 30, "You have attacked someone!");
     },
     
     targetDied: async function(interaction) {
