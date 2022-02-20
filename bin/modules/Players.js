@@ -33,7 +33,7 @@ const Players = {
         }
     },
     
-    foundTargetTimeout: function(interaction, foundTarget, seconds, reason) {
+    foundTargetTimeout: function(foundTarget, seconds, reason) {
         this.foundTargetTimeoutExempt(foundTarget) ? console.log('No Timeout') : foundTarget.timeout(1000*seconds, reason);
     },
 
