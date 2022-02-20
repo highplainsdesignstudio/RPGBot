@@ -1,5 +1,14 @@
 # Changes
 
+## v0.0.2
+
+- Added inspect command.
+- Added Defense attribute.
+- Attributes are now affecting attack, swing, and heal command values.
+- Commands to be added:
+    1. Bolster: Increases stats of target.
+    2. Intimidate: Reduces stats of target.
+
 ## v0.0.1
 
 - Added an attack command.

@@ -26,6 +26,14 @@ const SwingCommand = {
         this._target = value;
     },
 
+    _user: {},
+    get user() {
+        return this._user;
+    },
+    set user(value) {
+        this._user = value;
+    },
+
     swing: async function(interaction, channel) {
         const missCheck = Dice.roll(100);
         if(missCheck <= 30) {
@@ -71,7 +79,9 @@ const SwingCommand = {
         // The target is valid, set the attackValue
         this.attackValue = Dice.roll(6);
         // this.attackValue = 100;
+        this.user = Players.find(interaction.user.username);
         this.target = Players.find(this.found.user.username);
+        this.attackValue = Dice.modifiedAttackValue(this.attackValue, this.user.attack, this.found.defense);
         this.target.life = this.target.life - this.attackValue;
         Players.updateTarget(this.target);
 

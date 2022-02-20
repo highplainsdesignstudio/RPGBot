@@ -1,6 +1,6 @@
 {
   "name": "rpg-bot",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A discord bot with RPG commands or whatever.",
   "main": "index.js",
   "scripts": {
