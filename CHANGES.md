@@ -8,6 +8,7 @@
 - Commands to be added:
     1. Bolster: Increases stats of target.
     2. Intimidate: Reduces stats of target.
+    3. /blast: Attacks the last three speakers in the channel.
 
 ## v0.0.1
 

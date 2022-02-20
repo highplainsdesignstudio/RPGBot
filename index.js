@@ -4,6 +4,7 @@ const { Client, Intents } = require('discord.js');
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 const attackCommand = require('./bin/commands/AttackCommand');
+const blastCommand = require('./bin/commands/BlastCommand');
 const bolsterCommand = require('./bin/commands/BolsterCommand');
 const healCommand = require('./bin/commands/HealCommand');
 const inspectCommand = require('./bin/commands/InspectCommand');
@@ -19,6 +20,14 @@ client.on('interactionCreate', async interaction => {
   if(interaction.commandName == 'arm') armCommand.arm(interaction);
 
   if (interaction.commandName === 'attack') attackCommand.attack(interaction);
+
+  if(interaction.commandName === 'blast') {
+    client.channels.fetch(interaction.channelId)
+      .then(channel => {
+        blastCommand.blast(interaction, channel);
+      })
+    ;
+  }
 
   if (interaction.commandName === 'bolster') bolsterCommand.bolster(interaction);
 

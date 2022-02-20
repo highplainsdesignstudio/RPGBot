@@ -10,6 +10,10 @@ const commands = [
     type: 2
   },
   {
+    name: 'blast',
+    description: 'Blasts the last three speakers in the channel.'
+  },
+  {
     name: 'bolster',
     type: 2
   },
