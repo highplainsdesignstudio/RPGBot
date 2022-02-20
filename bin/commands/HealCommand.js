@@ -36,37 +36,27 @@ const HealCommand = {
                 }]
             });
         } else {
-            this.healValue = Dice.roll(6);
-            this.checkUser(interaction);
-            // Check if the target user's process variable exists.
-            const targetIsDead = this.checkTarget(interaction);
-            // console.log(process.env[`_${interaction.user.username}`]);
-            // await interaction.reply(`${interaction.user} has attacked ${interaction.targetUser} for ${this.attackValue} points. ${interaction.targetUser} now has ${process.env[`_${interaction.targetUser.username}`]} hit points left.`);
-            await interaction.reply({
-                content: `${interaction.user} has healed ${interaction.targetUser} for ${this.healValue} points. ${interaction.targetUser} now has ${this.target.life} hit points left.`,
-                files: [{
-                    attachment: './assets/SpellBook03_96.png'
-                }]
-            });
+            this.performHeal(interaction);
+            // Can check for max life in the future.
         }
     },
 
-    checkTarget: function(interaction) {
+    performHeal: async function(interaction) {
+        this.healValue = Dice.roll(6);
         this.target = Players.find(interaction.targetUser.username);
         this.target.life = this.target.life + this.healValue;
         Players.updateTarget(this.target);
-    },
 
-    checkUser: function(interaction) {
-        this.player = Players.find(interaction.user.username);
-        const exemptRoles = JSON.parse(process.env.TIMEOUT_EXEMPT);
-        const isExempt = !exemptRoles.every(role => {
-            if(interaction.member._roles.includes(role)) {
-                return false;
-            } else return true;
+        // Sent reply with results
+        await interaction.reply({
+            content: `${interaction.user} has healed ${interaction.targetUser} for ${this.healValue} points. ${interaction.targetUser} now has ${this.target.life} hit points left.`,
+            files: [{
+                attachment: './assets/SpellBook03_96.png'
+            }]
         });
-        isExempt ? console.log('No Timeout.') : interaction.member.timeout(1000*30, 'You have healed another user!');
-    },
+        // Timeout the user if possible.
+        Players.userTimeout(interaction, 30, "You have attacked someone!")
+    }
 }
 
 module.exports = HealCommand;

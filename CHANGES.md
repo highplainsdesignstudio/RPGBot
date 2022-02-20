@@ -11,3 +11,4 @@
 - Added checks for bot targeting.
 - All sorts of updates to the commands.
 - Added a /swing command that randomly attacks a member of the channel.
+- Cleaned up code.
