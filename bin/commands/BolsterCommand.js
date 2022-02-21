@@ -34,8 +34,17 @@ const BolsterCommand = {
         this._target = value;
     },
 
+    _targetUser: {},
+    get targetUser() {
+        return this._targetUser;
+    },
+    set targetUser(value) {
+        this._targetUser = value;
+    },
+
     bolster: async function(interaction) {
-        if (interaction.targetMember.user.bot) {
+        this.targetUser = interaction.options.get('target');
+        if (this.targetUser.bot) {
             await interaction.reply({
                 content: `${interaction.user} has targeted a bot! You can't target bots. Do something else.`,
                 files: [{
@@ -51,14 +60,14 @@ const BolsterCommand = {
         this.attackBoost = Dice.roll(3);
         this.defenseBoost = Dice.roll(3);
         this.healBoost = Dice.roll(3);
-        this.target = Players.find(interaction.targetUser.username);
+        this.target = Players.find(this.targetUser.username);
         this.target.attack = this.target.attack + this.attackBoost;
         this.target.defense = this.target.defense + this.defenseBoost;
         this.target.heal = this.target.heal + this.healBoost;
         Players.updateTarget(this.target);
         // Send the interaction with the results
         await interaction.reply({
-            content: `${interaction.user} has bolstered ${interaction.targetUser}! ${interaction.targetUser.username}'s attack power has increased by ${this.attackBoost} to ${this.target.attack}, defense has increased by ${this.defenseBoost} to ${this.target.defense}, and heal power has increased by ${this.healBoost} to ${this.target.heal}.`,
+            content: `${interaction.user} has bolstered ${this.targetUser.member}! ${this.targetUser.user.username}'s attack power has increased by ${this.attackBoost} to ${this.target.attack}, defense has increased by ${this.defenseBoost} to ${this.target.defense}, and heal power has increased by ${this.healBoost} to ${this.target.heal}.`,
             files: [{
                 attachment: './assets/bolster.png'
             }]

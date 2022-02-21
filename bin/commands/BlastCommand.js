@@ -13,14 +13,13 @@ const BlastCommand = {
     },
 
     blast: async function(interaction, channel) {
+        this.targets = await this.findTargets(channel);
         await interaction.reply({
             content: `${interaction.user} has blasted the entrance of the room.`,
             files: [{
                 attachment: './assets/blast.png'
             }]
         });
-        this.targets = await this.findTargets(channel);
-
         await this.targets.forEach(target => {
             // Process the blast for each message.
             this.performBlast(interaction, channel, target);
