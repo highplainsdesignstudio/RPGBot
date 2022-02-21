@@ -34,7 +34,7 @@ const AttackCommand = {
         this._user = value;
     },
 
-    attack: async function(interaction) {
+    attack: async function(interaction, channel) {
         this.targetUser = interaction.options.get('target');
         if (this.targetUser.bot) {
             await interaction.reply({
@@ -58,14 +58,14 @@ const AttackCommand = {
         this.attackValue = Dice.roll(6);
         // this.attackValue = 100;
         this.user = Players.find(interaction.user.username);
-        this.target = Players.find(this.targetUser.username);
+        this.target = Players.find(this.targetUser.user.username);
         this.attackValue = Dice.modifiedAttackValue(this.attackValue, this.user.attack, this.target.defense);
         this.target.life = this.target.life - this.attackValue;
         Players.updateTarget(this.target);
 
         // Send the interaction with the results
         await interaction.reply({
-            content: `${interaction.user} has attacked ${this.targetUser} for ${this.attackValue} points. ${this.targetUser.username} now has ${this.target.life>0 ? this.target.life : 'no'} hit points left.`,
+            content: `${interaction.user} has attacked ${this.targetUser.member} for ${this.attackValue} points. ${this.targetUser.user.username} now has ${this.target.life>0 ? this.target.life : 'no'} hit points left.`,
             files: [{
                 attachment: './assets/SpellBook03_89.png'
             }]

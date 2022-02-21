@@ -52,14 +52,14 @@ const HealCommand = {
     performHeal: async function(interaction) {
         this.healValue = Dice.roll(6);
         this.user = Players.find(interaction.user.username);
-        this.target = Players.find(this.targetUser.username);
+        this.target = Players.find(this.targetUser.user.username);
         this.healValue = Dice.modifiedHealValue(this.healValue, this.user.heal);
         this.target.life = this.target.life + this.healValue;
         Players.updateTarget(this.target);
 
         // Sent reply with results
         await interaction.reply({
-            content: `${interaction.user} has healed ${this.targetUser} for ${this.healValue} points. ${this.targetUser} now has ${this.target.life} hit points left.`,
+            content: `${interaction.user} has healed ${this.targetUser.member} for ${this.healValue} points. ${this.targetUser.user.username} now has ${this.target.life} hit points left.`,
             files: [{
                 attachment: './assets/SpellBook03_96.png'
             }]

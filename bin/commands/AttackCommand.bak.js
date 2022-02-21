@@ -56,7 +56,7 @@ const AttackCommand = {
 
         // Send the interaction with the results
         await interaction.reply({
-            content: `${interaction.user} has attacked ${interaction.targetUser} for ${this.attackValue} points. ${interaction.targetUser.username} now has ${this.target.life>0 ? this.target.life : 'no'} hit points left.`,
+            content: `${interaction.user} has attacked ${this.targetUser} for ${this.attackValue} points. ${this.targetUser.username} now has ${this.target.life>0 ? this.target.life : 'no'} hit points left.`,
             files: [{
                 attachment: './assets/SpellBook03_89.png'
             }]

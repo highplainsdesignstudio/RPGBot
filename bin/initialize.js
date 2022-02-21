@@ -24,8 +24,8 @@ const commands = [
   },
   {
     name: 'bolster',
-    type: 1,
-    description: `Bolsters a target and increases target's stats.`
+    type: 2,
+    // description: `Bolsters a target and increases target's stats.`
   },
   {
     name: 'heal',
