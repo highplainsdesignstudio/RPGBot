@@ -50,7 +50,16 @@ const commands = [
   },
   {
     name: 'inspect',
-    type: 2
+    type: 1,
+    description: 'Inspects a target and displays their stats.',
+    options: [
+      {
+        name: 'target',
+        description: ' The target you wish to inspect.',
+        type: 6,
+        required: true
+      }
+    ]
   },
   {
     name: 'intimidate',

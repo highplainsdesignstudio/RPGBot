@@ -12,7 +12,8 @@
     4. attack turned into a slash command.
     5. heal turned into a slash command.
     6. bolster turned into a slash command.
-    7. intimidate turned into a slash command
+    7. intimidate turned into a slash command.
+    8. inspect turned into a slash command.
 
 ## v0.0.1
 
