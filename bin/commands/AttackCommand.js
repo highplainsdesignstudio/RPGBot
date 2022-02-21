@@ -87,7 +87,7 @@ const AttackCommand = {
             });
         } else { 
             // Timeout the target and send the followup.;
-            interaction.followUp({
+            await interaction.followUp({
                 content:`${this.targetUser.username} has been incapacitated! They will be revived in 2 minutes.`,
                 files: [{
                     attachment: './assets/Death.png'
