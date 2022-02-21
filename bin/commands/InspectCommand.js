@@ -32,7 +32,7 @@ const InspectCommand = {
     },
 
     performInspect: async function(interaction) {
-        this.target = Players.find(this.targetUser.username);
+        this.target = Players.find(this.targetUser.user.username);
               // Send the interaction with the results
         await interaction.reply({
             content: `${interaction.user} has brazenly inspected ${this.targetUser.member}. ${this.targetUser.user.username} currently has ${this.target.life>0 ? this.target.life : 'no'} hit points left.\nTheir stats:\nAttack Power: ${this.target.attack}\nDefense: ${this.target.defense}\nHeal Power: ${this.target.heal}`,
