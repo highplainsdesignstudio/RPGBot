@@ -60,7 +60,7 @@ const IntimidateCommand = {
         this.attackBoost = Dice.roll(3);
         this.defenseBoost = Dice.roll(3);
         this.healBoost = Dice.roll(3);
-        this.target = Players.find(this.targetUser.username);
+        this.target = Players.find(this.targetUser.user.username);
         this.target.attack = (this.target.attack - this.attackBoost) >= 0 ? this.target.attack - this.attackBoost : 0;
         this.target.defense = (this.target.defense - this.defenseBoost) >= 0 ? this.target.defense - this.defenseBoost : 0;
         this.target.heal = (this.target.heal - this.healBoost) >= 0 ? this.target.heal - this.healBoost : 0;
