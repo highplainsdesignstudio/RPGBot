@@ -54,7 +54,16 @@ const commands = [
   },
   {
     name: 'intimidate',
-    type: 2
+    type: 1,
+    description: 'Intimidates a target and reduces their stats.',
+    options: [
+      {
+        name: 'target',
+        description: 'The target you wish to intimidate.',
+        type: 6,
+        required: true
+      }
+    ]
   },
   {
     name: 'swing',
