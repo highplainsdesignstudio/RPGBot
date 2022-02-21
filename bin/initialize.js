@@ -2,12 +2,21 @@ require('./env');
 
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
+const { user } = require('./commands/AttackCommand');
 
 const commands = [
-
   {
     name: 'attack',
-    type: 2
+    type: 1,
+    description: 'Attacks a target.',
+    options: [
+      {
+        name: 'target',
+        description: 'The target you wish to attack.',
+        type: 6,
+        required: true
+      }
+    ]
   },
   {
     name: 'blast',
@@ -15,11 +24,21 @@ const commands = [
   },
   {
     name: 'bolster',
-    type: 2
+    type: 1,
+    description: `Bolsters a target and increases target's stats.`
   },
   {
     name: 'heal',
-    type: 2
+    type: 1,
+    description: 'Heals a target.',
+    options: [
+      {
+        name: 'target',
+        description: 'The target you wish to heal.',
+        type: 6,
+        required: true
+      }
+    ]
   },
   {
     name: 'inspect',

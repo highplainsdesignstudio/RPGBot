@@ -18,6 +18,14 @@ const HealCommand = {
         this._target = value;
     },
 
+    _targetUser: {},
+    get targetUser() {
+        return this._targetUser;
+    },
+    set targetUser(value) {
+        this._targetUser = value;
+    },
+
     _user: {},
     get user() {
         return this._user;
@@ -27,8 +35,8 @@ const HealCommand = {
     },
 
     heal: async function(interaction) {
-
-        if (interaction.targetMember.user.bot) {
+        this.targetUser = interaction.options.get('target');
+        if (this.targetUser.bot) {
             await interaction.reply({
                 content: `${interaction.user} has targeted a bot! You can't target bots. Do something else.`,
                 files: [{
@@ -44,14 +52,14 @@ const HealCommand = {
     performHeal: async function(interaction) {
         this.healValue = Dice.roll(6);
         this.user = Players.find(interaction.user.username);
-        this.target = Players.find(interaction.targetUser.username);
+        this.target = Players.find(this.targetUser.username);
         this.healValue = Dice.modifiedHealValue(this.healValue, this.user.heal);
         this.target.life = this.target.life + this.healValue;
         Players.updateTarget(this.target);
 
         // Sent reply with results
         await interaction.reply({
-            content: `${interaction.user} has healed ${interaction.targetUser} for ${this.healValue} points. ${interaction.targetUser} now has ${this.target.life} hit points left.`,
+            content: `${interaction.user} has healed ${this.targetUser} for ${this.healValue} points. ${this.targetUser} now has ${this.target.life} hit points left.`,
             files: [{
                 attachment: './assets/SpellBook03_96.png'
             }]

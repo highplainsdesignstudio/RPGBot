@@ -9,6 +9,9 @@
     1. Bolster: Increases stats of target.
     2. Intimidate: Reduces stats of target.
     3. /blast: Attacks the last three speakers in the channel.
+    4. attack turned into a slash command.
+    5. heal turned into a slash command.
+    6. bolster turned into a slash command.
 
 ## v0.0.1
 

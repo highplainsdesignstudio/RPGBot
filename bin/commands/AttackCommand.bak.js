@@ -18,14 +18,6 @@ const AttackCommand = {
         this._target = value;
     },
 
-    _targetUser: {},
-    get targetUser() {
-        return this._targetUser;
-    },
-    set targetUser(value) {
-        this._targetUser = value;
-    },
-
     _user: {},
     get user() {
         return this._user;
@@ -35,8 +27,7 @@ const AttackCommand = {
     },
 
     attack: async function(interaction) {
-        this.targetUser = interaction.options.get('target');
-        if (this.targetUser.bot) {
+        if (interaction.targetMember.user.bot) {
             await interaction.reply({
                 content: `${interaction.user} has targeted a bot! You can't target bots. Do something else.`,
                 files: [{
@@ -58,14 +49,14 @@ const AttackCommand = {
         this.attackValue = Dice.roll(6);
         // this.attackValue = 100;
         this.user = Players.find(interaction.user.username);
-        this.target = Players.find(this.targetUser.username);
+        this.target = Players.find(interaction.targetUser.username);
         this.attackValue = Dice.modifiedAttackValue(this.attackValue, this.user.attack, this.target.defense);
         this.target.life = this.target.life - this.attackValue;
         Players.updateTarget(this.target);
 
         // Send the interaction with the results
         await interaction.reply({
-            content: `${interaction.user} has attacked ${this.targetUser} for ${this.attackValue} points. ${this.targetUser.username} now has ${this.target.life>0 ? this.target.life : 'no'} hit points left.`,
+            content: `${interaction.user} has attacked ${interaction.targetUser} for ${this.attackValue} points. ${interaction.targetUser.username} now has ${this.target.life>0 ? this.target.life : 'no'} hit points left.`,
             files: [{
                 attachment: './assets/SpellBook03_89.png'
             }]
@@ -80,7 +71,7 @@ const AttackCommand = {
             // target is exempt, send the followup.
             console.log('No Timeout');
             await interaction.followUp({
-                content:`${this.targetUser} has been incapacitated!`,
+                content:`${interaction.targetUser} has been incapacitated!`,
                 files: [{
                     attachment: './assets/Death.png'
                 }]
@@ -88,7 +79,7 @@ const AttackCommand = {
         } else { 
             // Timeout the target and send the followup.;
             interaction.followUp({
-                content:`${this.targetUser.username} has been incapacitated! They will be revived in 2 minutes.`,
+                content:`${interaction.targetUser.username} has been incapacitated! They will be revived in 2 minutes.`,
                 files: [{
                     attachment: './assets/Death.png'
                 }]
