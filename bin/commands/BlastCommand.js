@@ -74,6 +74,10 @@ const BlastCommand = {
             Players.foundTargetTimeout(targetMember, 120, "You have lost all of your hit points.");
             // Change the life back to 100 and Players.updateTarget again.
             _target.life = 100;
+            _target.life = 100;
+            _target.attack = 1;
+            _target.defense = 1;
+            _target.heal = 1;
             Players.updateTarget(_target);
         }
     }
