@@ -66,7 +66,7 @@ const Players = {
          // Loop through the array to find the users index.
          let _index = 0;
          players.every((player, index) => {
-            if(player.username === target.username){
+            if(player.username === target.user.username){
                 _index = index;
                 return false;
             } else return true;

@@ -102,7 +102,7 @@ const SwingCommand = {
         if(Players.foundTargetTimeoutExempt(this.found)) {
             // target is exempt, send the followup.
             console.log('No Timeout');
-            interaction.followUp({
+            await interaction.followUp({
                 content:`${this.found.user} has been incapacitated!`,
                 files: [{
                     attachment: './assets/Death.png'
@@ -110,7 +110,7 @@ const SwingCommand = {
             });
         } else { 
             // Timeout the target and send the followup.;
-            interaction.followUp({
+            await interaction.followUp({
                 content:`${this.found.user} has been incapacitated! They will be revived in 2 minutes.`,
                 files: [{
                     attachment: './assets/Death.png'
