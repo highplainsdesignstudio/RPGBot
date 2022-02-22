@@ -25,7 +25,13 @@ const Players = {
                 attack: 1,
                 defense: 1,
                 heal: 1,
-                life: 100
+                life: 100,
+                kills: 0,
+                deaths: 0,
+                damageDone: 0,
+                damageTaken: 0,
+                healsDone: 0,
+                healsTaken: 0
             }
             players.push(_player);
             process.env.PLAYERS = JSON.stringify(players);

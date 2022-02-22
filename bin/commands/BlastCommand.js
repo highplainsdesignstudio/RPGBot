@@ -25,7 +25,7 @@ const BlastCommand = {
             this.performBlast(interaction, channel, target);
         });
     },
-
+    // TODO: You should not be able to blast yourself. Check that the user does not target themselves.
     findTargets: async function(channel) {
         const messages = await channel.messages.fetch({limit:50});
         // remove the first message because it will be the interaction
@@ -49,11 +49,18 @@ const BlastCommand = {
     },
 
     performBlast: async function(interaction, channel, target) {
+        // TODO: update attack value to include a third of a modifiedAttackValue;
         const attackValue = Dice.roll(2);
         // const attackValue = 40;
         let _target = Players.find(target.username);
+        let _user = Players.find(interaction.user.username);
+        
         _target.life = _target.life - attackValue;
+        _target.damageTaken = _target.damageTaken + attackValue;
+        (interaction.user.id === target.id) ? _target.damageDone = _target.damageDone + attackValue : _user.damageDone = _user.damageDone + attackValue;
+        _
         Players.updateTarget(_target);
+        if(interaction.user.id !== target.id) Players.updateTarget(_user);
 
         await interaction.followUp({
             content: `${target} was blasted for ${attackValue}. `
@@ -68,7 +75,9 @@ const BlastCommand = {
                     attachment: './assets/Death.png'
                 }]
             });
-            // Have to convert the target into a guildmember
+
+
+            // Have to convert the target into a guildmember to timeout
             const targetMember = channel.members.get(target.id);
             // Timeout target if possible.
             Players.foundTargetTimeout(targetMember, 120, "You have lost all of your hit points.");
@@ -78,6 +87,7 @@ const BlastCommand = {
             _target.attack = 1;
             _target.defense = 1;
             _target.heal = 1;
+            _target.deaths++;
             Players.updateTarget(_target);
         }
     }
