@@ -54,7 +54,7 @@ const HealCommand = {
         this.user = Players.find(interaction.user.username);
         this.target = Players.find(this.targetUser.user.username);
         this.healValue = Dice.modifiedHealValue(this.healValue, this.user.heal);
-        this.target.life = this.target.life + this.healValue;
+        this.target.life = (this.target.life + this.healValue) <= 200 ? (this.target.life + this.healValue) : 200;
         Players.updateTarget(this.target);
 
         // Sent reply with results

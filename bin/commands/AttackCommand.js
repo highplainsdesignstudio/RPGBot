@@ -97,6 +97,9 @@ const AttackCommand = {
         }
         // Either way, reset the player life to 100 and update.
         this.target.life = 100;
+        this.target.attack = 1;
+        this.target.defense = 1;
+        this.target.heal = 1;
         Players.updateTarget(this.target);
     },
 }

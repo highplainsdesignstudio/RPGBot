@@ -61,9 +61,15 @@ const BolsterCommand = {
         this.defenseBoost = Dice.roll(3);
         this.healBoost = Dice.roll(3);
         this.target = Players.find(this.targetUser.user.username);
-        this.target.attack = this.target.attack + this.attackBoost;
-        this.target.defense = this.target.defense + this.defenseBoost;
-        this.target.heal = this.target.heal + this.healBoost;
+
+        // Update the boost values to max the stats to 50. 
+        this.attackBoost = (this.target.attack + this.attackBoost) <= 50 ? this.attackBoost : (50 - this.target.attack);
+        this.defenseBoost = (this.target.defense + this.defenseBoost) <= 50 ? this.defenseBoost : (50 - this.target.defense);
+        this.healBoost = (this.target.heal + this.healBoost) <= 50 ? this.healBoost : (50 - this.target.heal);
+
+        this.target.attack = (this.target.attack + this.attackBoost) <= 50 ? (this.target.attack + this.attackBoost) : 50;
+        this.target.defense = (this.target.defense + this.defenseBoost) <= 50 ? (this.target.defense + this.defenseBoost) : 50;
+        this.target.heal = (this.target.heal + this.healBoost) <= 50 ? (this.target.heal + this.healBoost) : 50;
         Players.updateTarget(this.target);
         // Send the interaction with the results
         await interaction.reply({

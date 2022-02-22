@@ -1,5 +1,14 @@
 # Changes
 
+## v0.0.3
+
+- Changes to stat mechanics.
+  - Dice.modifiedAttackValue now adds 10% base damage for every point of attack power, and subtracts 1% of this modified value for every point of defense.
+  - Dice.modifiedHealValue now adds 7% base healing for every point of heal power.
+  - When you die from attack, blast, or swing commands, players attack, defense, and heal are updated to 1.
+  - Bolster command now maxes stats out at 50.
+  - Heal command maxes the life out to 200.
+
 ## v0.0.2
 
 - Added inspect command.
