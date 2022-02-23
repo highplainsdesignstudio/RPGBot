@@ -62,7 +62,7 @@ const BlastCommand = {
         _target.life = _target.life - attackValue;
         _target.damageTaken = _target.damageTaken + attackValue;
         (interaction.user.id === target.id) ? _target.damageDone = _target.damageDone + attackValue : _user.damageDone = _user.damageDone + attackValue;
-        _
+
         Players.updateTarget(_target);
         if(interaction.user.id !== target.id) Players.updateTarget(_user);
 

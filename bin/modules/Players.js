@@ -58,9 +58,10 @@ const Players = {
     },
 
     targetTimeoutExempt: function(interaction) {
+        const _targetUser = interaction.options.get('target');
         const exemptRoles = JSON.parse(process.env.TIMEOUT_EXEMPT);
         const isExempt = !exemptRoles.every(role => {
-            if(interaction.targetMember._roles.includes(role)) {
+            if(_targetUser.member._roles.includes(role)) {
                 return false;
             } else return true;
         });

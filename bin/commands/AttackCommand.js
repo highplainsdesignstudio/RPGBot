@@ -55,11 +55,11 @@ const AttackCommand = {
     },
 
     performAttack: async function(interaction) {
-        this.attackValue = Dice.roll(6);
-        // this.attackValue = 100;
+        // this.attackValue = Dice.roll(6);
+        this.attackValue = 100;
        // Find user and target.
        this.user = Players.find(interaction.user.username);
-       this.target = Players.find(this.targetUser.username);
+       this.target = Players.find(this.targetUser.user.username);
        // Calculate attack value and update stats and target life.
        this.attackValue = Dice.modifiedAttackValue(this.attackValue, this.user.attack, this.target.defense);
        this.target.life = this.target.life - this.attackValue;
@@ -86,7 +86,7 @@ const AttackCommand = {
             // target is exempt, send the followup.
             console.log('No Timeout');
             await interaction.followUp({
-                content:`${this.targetUser} has been incapacitated!`,
+                content:`${this.targetUser.member} has been incapacitated!`,
                 files: [{
                     attachment: './assets/Death.png'
                 }]
@@ -94,7 +94,7 @@ const AttackCommand = {
         } else { 
             // Timeout the target and send the followup.;
             await interaction.followUp({
-                content:`${this.targetUser.username} has been incapacitated! They will be revived in 2 minutes.`,
+                content:`${this.targetUser.member} has been incapacitated! They will be revived in 2 minutes.`,
                 files: [{
                     attachment: './assets/Death.png'
                 }]
@@ -109,7 +109,7 @@ const AttackCommand = {
         this.target.deaths = this.target.deaths + 1;
         Players.updateTarget(this.target);
         // Update the user's kills count.
-        this.user.deaths = this.user.deaths + 1;
+        this.user.kills = this.user.kills + 1;
         Players.updateTarget(this.user);
     },
 }
