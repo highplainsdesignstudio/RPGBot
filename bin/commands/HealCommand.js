@@ -53,6 +53,7 @@ const HealCommand = {
         this.healValue = Dice.roll(6);
         this.user = Players.find(interaction.user.username);
         this.target = Players.find(this.targetUser.user.username);
+        // TODO: Here, the target should stop being updated if the target is the user.
         this.healValue = Dice.modifiedHealValue(this.healValue, this.user.heal);
         this.target.life = (this.target.life + this.healValue) <= 200 ? (this.target.life + this.healValue) : 200;
 
