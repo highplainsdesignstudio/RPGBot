@@ -5,7 +5,7 @@ const Dice = {
     },
 
     modifiedAttackValue: function(original, attack, defense) {
-        let boostAttack = attack * 7;
+        let boostAttack = attack * 10;
         let modified = original + Math.round(boostAttack / 100 * original);
         modified = modified - Math.round(defense / 100 * modified);
         if(modified <= 0) modified = 1;
@@ -13,7 +13,7 @@ const Dice = {
     },
 
     modifiedHealValue: function(original, heal) {
-        let boostHeal = heal * 10;
+        let boostHeal = heal * 7;
         let modified = original + Math.round(boostHeal / 100 * original);
         return modified;
     }

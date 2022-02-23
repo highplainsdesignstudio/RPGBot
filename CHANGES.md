@@ -8,6 +8,7 @@
 - Attack command updates damageDone and damageTaken, kills, and deaths stats for user and target.
 - A user can not attack or intimidate themselves
 - Heal command updates healsDone and healsTaken.
+- Blast command should now not target the user.
 
 ## v0.0.3
 
