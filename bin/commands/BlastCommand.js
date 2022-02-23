@@ -13,7 +13,7 @@ const BlastCommand = {
     },
 
     blast: async function(interaction, channel) {
-        this.targets = await this.findTargets(channel);
+        this.targets = await this.findTargets(channel, interaction);
         await interaction.reply({
             content: `${interaction.user} has blasted the entrance of the room.`,
             files: [{
@@ -25,20 +25,24 @@ const BlastCommand = {
             this.performBlast(interaction, channel, target);
         });
     },
-
-    findTargets: async function(channel) {
+    // TODO: You should not be able to blast yourself. Check that the user does not target themselves.
+    findTargets: async function(channel, interaction) {
         const messages = await channel.messages.fetch({limit:50});
         // remove the first message because it will be the interaction
         let targets = [];
         // Iterate through the messages here with the variable "messages". Theoretically, the message should be a user or a bot interaction initiated by a user, a message by a user, or a message by a bot.
         messages.every(message => {
-            console.log(message.content)
+            // console.log(message.content)
             // Check if message author is a bot.
             if(message.author.bot) {
                 // If it is a bot, get the interaction user as the stand in.
-                if(message.interaction) targets.push(message.interaction.user);
+                // Check that the interaction.user.id !== message.interaction.user.id
+                // (interaction.user.id === message.interaction.user.id) ? console.log( 'Do nothing') : 
+                if(message.interaction) {
+                    if(interaction.user.id !== message.interaction.user.id) targets.push(message.interaction.user);
+                }
                
-            } else targets.push(message.member); // else the target is not a bot.
+            } else (interaction.user.id !== message.author.id) ? targets.push(message.member): console.log('Do nothing.'); // else the target is not a bot.
             
             // Check the size of the targets variable. If it is 3 in size, return false.
             if(targets.length >= 3) return false;
@@ -49,11 +53,18 @@ const BlastCommand = {
     },
 
     performBlast: async function(interaction, channel, target) {
+        // TODO: update attack value to include a third of a modifiedAttackValue;
         const attackValue = Dice.roll(2);
         // const attackValue = 40;
         let _target = Players.find(target.username);
+        let _user = Players.find(interaction.user.username);
+        
         _target.life = _target.life - attackValue;
+        _target.damageTaken = _target.damageTaken + attackValue;
+        (interaction.user.id === target.id) ? _target.damageDone = _target.damageDone + attackValue : _user.damageDone = _user.damageDone + attackValue;
+        _
         Players.updateTarget(_target);
+        if(interaction.user.id !== target.id) Players.updateTarget(_user);
 
         await interaction.followUp({
             content: `${target} was blasted for ${attackValue}. `
@@ -68,7 +79,9 @@ const BlastCommand = {
                     attachment: './assets/Death.png'
                 }]
             });
-            // Have to convert the target into a guildmember
+
+
+            // Have to convert the target into a guildmember to timeout
             const targetMember = channel.members.get(target.id);
             // Timeout target if possible.
             Players.foundTargetTimeout(targetMember, 120, "You have lost all of your hit points.");
@@ -78,6 +91,7 @@ const BlastCommand = {
             _target.attack = 1;
             _target.defense = 1;
             _target.heal = 1;
+            _target.deaths++;
             Players.updateTarget(_target);
         }
     }

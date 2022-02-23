@@ -35,7 +35,7 @@ const InspectCommand = {
         this.target = Players.find(this.targetUser.user.username);
               // Send the interaction with the results
         await interaction.reply({
-            content: `${interaction.user} has brazenly inspected ${this.targetUser.member}. ${this.targetUser.user.username} currently has ${this.target.life>0 ? this.target.life : 'no'} hit points left.\nTheir stats:\nAttack Power: ${this.target.attack}\nDefense: ${this.target.defense}\nHeal Power: ${this.target.heal}`,
+            content: `${interaction.user} has brazenly inspected ${this.targetUser.member}. ${this.targetUser.user.username} currently has ${this.target.life>0 ? this.target.life : 'no'} hit points left.\nTheir stats:\nAttack Power: ${this.target.attack}\nDefense: ${this.target.defense}\nHeal Power: ${this.target.heal}\nDamage Done: ${this.target.damageDone}\nDamage Taken: ${this.target.damageTaken}\nHeals Done: ${this.target.healsDone}\nHeals Taken: ${this.target.healsTaken}\nKills: ${this.target.kills}\nDeaths: ${this.target.deaths}`,
             files: [{
                 attachment: './assets/inspect.png'
             }]

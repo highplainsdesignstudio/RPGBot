@@ -44,9 +44,9 @@ const IntimidateCommand = {
 
     intimidate: async function(interaction) {
         this.targetUser = interaction.options.get('target');
-        if (this.targetUser.bot) {
+        if (this.targetUser.bot || (this.targetUser.user.id === interaction.user.id)) {
             await interaction.reply({
-                content: `${interaction.user} has targeted a bot! You can't target bots. Do something else.`,
+                content: `${interaction.user} You can't target that person. Do something else.`,
                 files: [{
                     attachment: './assets/bot.png'
                 }]

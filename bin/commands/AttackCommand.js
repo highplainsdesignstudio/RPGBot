@@ -36,9 +36,9 @@ const AttackCommand = {
 
     attack: async function(interaction, channel) {
         this.targetUser = interaction.options.get('target');
-        if (this.targetUser.bot) {
+        if (this.targetUser.bot || (interaction.user.id === this.targetUser.user.id)) {
             await interaction.reply({
-                content: `${interaction.user} has targeted a bot! You can't target bots. Do something else.`,
+                content: `${interaction.user} You can't target that person. Do something else.`,
                 files: [{
                     attachment: './assets/bot.png'
                 }]
@@ -57,11 +57,17 @@ const AttackCommand = {
     performAttack: async function(interaction) {
         this.attackValue = Dice.roll(6);
         // this.attackValue = 100;
-        this.user = Players.find(interaction.user.username);
-        this.target = Players.find(this.targetUser.user.username);
-        this.attackValue = Dice.modifiedAttackValue(this.attackValue, this.user.attack, this.target.defense);
-        this.target.life = this.target.life - this.attackValue;
-        Players.updateTarget(this.target);
+       // Find user and target.
+       this.user = Players.find(interaction.user.username);
+       this.target = Players.find(this.targetUser.username);
+       // Calculate attack value and update stats and target life.
+       this.attackValue = Dice.modifiedAttackValue(this.attackValue, this.user.attack, this.target.defense);
+       this.target.life = this.target.life - this.attackValue;
+       this.user.damageDone = this.user.damageDone + this.attackValue;
+       this.target.damageTaken = this.target.damageTaken + this.attackValue;
+       // Update user and target.
+       Players.updateTarget(this.user);
+       Players.updateTarget(this.target);
 
         // Send the interaction with the results
         await interaction.reply({
@@ -95,12 +101,16 @@ const AttackCommand = {
             });
             Players.targetTimeout(interaction, 120, "You have lost all of your hit points.");
         }
-        // Either way, reset the player life to 100 and update.
+        // Either way, reset the player life to 100, the stats to 1, +1 deaths stat, and update.
         this.target.life = 100;
         this.target.attack = 1;
         this.target.defense = 1;
         this.target.heal = 1;
+        this.target.deaths = this.target.deaths + 1;
         Players.updateTarget(this.target);
+        // Update the user's kills count.
+        this.user.deaths = this.user.deaths + 1;
+        Players.updateTarget(this.user);
     },
 }
 

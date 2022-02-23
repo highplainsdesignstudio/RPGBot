@@ -1,5 +1,15 @@
 # Changes
 
+## v0.0.4
+
+- More stats added to player at creation.
+  - kills: 0, deaths: 0, damageDone: 0, damageTaken: 0, healsDone: 0, healsTaken: 0.
+- Inspect command shows these new stats.
+- Attack command updates damageDone and damageTaken, kills, and deaths stats for user and target.
+- A user can not attack or intimidate themselves
+- Heal command updates healsDone and healsTaken.
+- Blast command should now not target the user.
+
 ## v0.0.3
 
 - Changes to stat mechanics.

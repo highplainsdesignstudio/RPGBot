@@ -55,9 +55,16 @@ const HealCommand = {
         this.target = Players.find(this.targetUser.user.username);
         this.healValue = Dice.modifiedHealValue(this.healValue, this.user.heal);
         this.target.life = (this.target.life + this.healValue) <= 200 ? (this.target.life + this.healValue) : 200;
-        Players.updateTarget(this.target);
 
-        // Sent reply with results
+        this.user.healsDone = this.user.healsDone + this.healValue; // Updates the user.healsDone value.
+        // update the healsTaken values.
+        (interaction.user.id === this.targetUser.user.id) ? this.user.healsTaken = this.user.healsTaken + this.healValue : this.target.healsTaken = this.target.healsTaken + this.healValue;
+
+        // Update the targets.
+        Players.updateTarget(this.target);
+        Players.updateTarget(this.user); // This probably needs to be second in order to get the correct healsTaken value.
+
+        // Send reply with results
         await interaction.reply({
             content: `${interaction.user} has healed ${this.targetUser.member} for ${this.healValue} points. ${this.targetUser.user.username} now has ${this.target.life} hit points left.`,
             files: [{
