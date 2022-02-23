@@ -55,8 +55,8 @@ const AttackCommand = {
     },
 
     performAttack: async function(interaction) {
-        // this.attackValue = Dice.roll(6);
-        this.attackValue = 100;
+        this.attackValue = Dice.roll(6);
+        // this.attackValue = 100;
        // Find user and target.
        this.user = Players.find(interaction.user.username);
        this.target = Players.find(this.targetUser.user.username);
