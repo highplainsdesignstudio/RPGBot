@@ -9,6 +9,7 @@
 - A user can not attack or intimidate themselves
 - Heal command updates healsDone and healsTaken.
 - Blast command should now not target the user.
+- Fixed bug #6: https://github.com/highplainsdesignstudio/RPGBot/issues/6
 
 ## v0.0.3
 

@@ -55,19 +55,20 @@ const HealCommand = {
         this.target = Players.find(this.targetUser.user.username);
         // TODO: Here, the target should stop being updated if the target is the user.
         this.healValue = Dice.modifiedHealValue(this.healValue, this.user.heal);
-        this.target.life = (this.target.life + this.healValue) <= 200 ? (this.target.life + this.healValue) : 200;
+        if(interaction.user.id === this.targetUser.user.id) this.user.life = (this.user.life + this.healValue) <= 200 ? (this.user.life + this.healValue) : 200;
+        else this.target.life = (this.target.life + this.healValue) <= 200 ? (this.target.life + this.healValue) : 200;
 
         this.user.healsDone = this.user.healsDone + this.healValue; // Updates the user.healsDone value.
         // update the healsTaken values.
         (interaction.user.id === this.targetUser.user.id) ? this.user.healsTaken = this.user.healsTaken + this.healValue : this.target.healsTaken = this.target.healsTaken + this.healValue;
 
         // Update the targets.
-        Players.updateTarget(this.target);
-        Players.updateTarget(this.user); // This probably needs to be second in order to get the correct healsTaken value.
+        Players.updateTarget(this.user); 
+        if(interaction.user.id !== this.targetUser.user.id) Players.updateTarget(this.target);
 
         // Send reply with results
         await interaction.reply({
-            content: `${interaction.user} has healed ${this.targetUser.member} for ${this.healValue} points. ${this.targetUser.user.username} now has ${this.target.life} hit points left.`,
+            content: `${interaction.user} has healed ${this.targetUser.member} for ${this.healValue} points. ${this.targetUser.user.username} now has ${(interaction.user.id === this.targetUser.user.id) ? this.user.life :this.target.life} hit points left.`,
             files: [{
                 attachment: './assets/SpellBook03_96.png'
             }]
